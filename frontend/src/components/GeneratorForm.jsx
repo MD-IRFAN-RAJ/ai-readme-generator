@@ -23,7 +23,9 @@ const App = () => {
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const res = await fetch("http://localhost:5000/generate-readme", {
+      const API_URL = import.meta.env.Backend_url || "https://your-backend.onrender.com";
+
+      const res = await fetch(`${API_URL}/generate-readme`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
