@@ -5,7 +5,10 @@ import axios from "axios";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "https://aireadmegenerator.vercel.app", // Your Vercel URL
+  methods: ["GET", "POST"] // Adjust based on your needs
+}));
 app.use(express.json());
 
 app.post("/generate-readme", async (req, res) => {
