@@ -11,6 +11,10 @@ app.use(cors({
 }));
 app.use(express.json());
 
+// Add this above your /generate-readme route
+app.get("/", (req, res) => {
+  res.send("AI README Generator Backend is running!");
+});
 app.post("/generate-readme", async (req, res) => {
   const { githubUrl, repoName, description, features, installation, usage } = req.body;
 
