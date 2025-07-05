@@ -55,7 +55,7 @@ Use proper markdown formatting, emojis, and sections like Introduction, Features
   }
 });
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000; // Render will inject the PORT
 app.listen(PORT, () => {
-  console.log(`✅ Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`); // Now works on both local and Render
 });
