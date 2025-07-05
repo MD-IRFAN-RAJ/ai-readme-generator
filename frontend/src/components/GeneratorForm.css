@@ -1,0 +1,21 @@
+#readme-container {
+  color: black; /* Changed from white for readability */
+  padding: 20px;
+  border-radius: 10px;
+  font-family: monospace;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  background-color: transparent; /* ⛔ Removed blue/dark background */
+}
+
+#readme-container a,
+#readme-container p,
+#readme-container span,
+#readme-container code,
+#readme-container pre {
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: pre-wrap;
+}

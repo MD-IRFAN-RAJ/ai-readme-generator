@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: README Generator API
+  description: API to generate README.md content using OpenAI
+  version: 1.0.0
+servers:
+  - url: http://localhost:5000
+
+paths:
+  /generate-readme:
+    post:
+      summary: Generate a professional README.md file
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                repoName:
+                  type: string
+                  example: My Awesome Project
+                description:
+                  type: string
+                  example: This project is a sample full-stack application.
+                features:
+                  type: string
+                  example: Authentication, REST API, Responsive UI
+                installation:
+                  type: string
+                  example: npm install && npm run dev
+                usage:
+                  type: string
+                  example: npm start
+      responses:
+        "200":
+          description: Successfully generated README
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  readme:
+                    type: string
+        "500":
+          description: Failed to generate README
