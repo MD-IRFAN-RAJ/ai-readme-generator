@@ -5,10 +5,16 @@ import axios from "axios";
 
 dotenv.config();
 const app = express();
+
+
 app.use(cors({
-  origin: "https://aireadmegenerator.vercel.app", // Your Vercel URL
-  methods: ["GET", "POST"] // Adjust based on your needs
+  origin: "https://aireadmegenerator.vercel.app",
+  methods: ["POST", "OPTIONS"], // Add OPTIONS for preflight
+  allowedHeaders: ["Content-Type"],
 }));
+
+// Handle preflight requests
+app.options('*', cors());
 app.use(express.json());
 
 // Add this above your /generate-readme route
