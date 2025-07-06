@@ -27,6 +27,7 @@ const API_URL = import.meta.env.VITE_BACKEND_URL || "https://your-backend.onrend
 const handleGenerate = async () => {
   setLoading(true);
   try {
+    console.log("Sending request to:", `${API_URL}/generate-readme`); // for testing
     const res = await fetch(`${API_URL}/generate-readme`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
