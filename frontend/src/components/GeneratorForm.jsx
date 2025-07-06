@@ -20,24 +20,31 @@ const App = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleGenerate = async () => {
-    setLoading(true);
-    try {
-      const API_URL = import.meta.env.Backend_url || "https://your-backend.onrender.com";
+ // Fix the environment variable name (Vite uses VITE_ prefix)
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://your-backend.onrender.com";
 
-      const res = await fetch(`${API_URL}/generate-readme`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-      setReadme(data.readme || "Error generating README");
-    } catch (err) {
-      setReadme("Error connecting to backend.");
+// Add error handling
+const handleGenerate = async () => {
+  setLoading(true);
+  try {
+    const res = await fetch(`${API_URL}/generate-readme`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+    
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
     }
-    setLoading(false);
-  };
+    
+    const data = await res.json();
+    setReadme(data.readme);
+  } catch (err) {
+    console.error("Fetch error:", err);
+    setReadme(`Error: ${err.message}`);
+  }
+  setLoading(false);
+};
 
   const copyReadme = () => {
     navigator.clipboard.writeText(readme).then(() => {
