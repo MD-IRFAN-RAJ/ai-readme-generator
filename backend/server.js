@@ -6,10 +6,16 @@ import axios from "axios";
 dotenv.config();
 const app = express();
 
+// Log every incoming request
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  next();
+});
 
+// CORS configuration
 app.use(cors({
   origin: "https://aireadmegenerator.vercel.app",
-  methods: ["POST", "OPTIONS"], // Add OPTIONS for preflight
+  methods: ["POST", "OPTIONS"],
   allowedHeaders: ["Content-Type"],
 }));
 
@@ -17,12 +23,24 @@ app.use(cors({
 app.options('*', cors());
 app.use(express.json());
 
-// Add this above your /generate-readme route
+// Home route
 app.get("/", (req, res) => {
   res.send("AI README Generator Backend is running!");
 });
+
+// README generation route
 app.post("/generate-readme", async (req, res) => {
   const { githubUrl, repoName, description, features, installation, usage } = req.body;
+
+  // Input validation
+  if (!githubUrl || !repoName || !description) {
+    return res.status(400).json({ error: "Missing required fields." });
+  }
+
+  // Basic input sanitization
+  if (repoName.includes('/:') || githubUrl.includes('/:')) {
+    return res.status(400).json({ error: "Invalid input format." });
+  }
 
   try {
     const prompt = `
@@ -40,7 +58,7 @@ Use proper markdown formatting, emojis, and sections like Introduction, Features
     const response = await axios.post(
       "https://openrouter.ai/api/v1/chat/completions",
       {
-        model: "mistralai/mistral-7b-instruct", // or "mistralai/mixtral-8x7b-instruct"
+        model: "mistralai/mistral-7b-instruct",
         messages: [
           {
             role: "user",
@@ -60,12 +78,18 @@ Use proper markdown formatting, emojis, and sections like Introduction, Features
     res.status(200).json({ readme: generatedReadme });
 
   } catch (error) {
-    console.error("OpenRouter error:", error.response?.data || error.message);
+    console.error("OpenRouter Error:", error.response?.data || error.message);
     res.status(500).json({ error: "Failed to generate README" });
   }
 });
 
-const PORT = process.env.PORT || 5000; // Render will inject the PORT
+// 404 handler for unknown routes
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Start the server
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`); // Now works on both local and Render
+  console.log(`🚀 Server running on port ${PORT}`);
 });
