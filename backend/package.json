@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"node server.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -20,9 +20,7 @@
     "express": "^5.1.0",
     "mongoose": "^8.16.1",
     "node-fetch": "^3.3.2",
-    "openai": "^5.8.2",
-    "swagger-ui-express": "^5.0.1",
-    "yamljs": "^0.3.0"
+    "openai": "^5.8.2"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
